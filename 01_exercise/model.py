@@ -27,18 +27,18 @@ class QNetwork(nn.Module):
         self.fc5 = nn.Linear(8, action_size)
 
         # specify dropout layers
-        self.dropout = nn.Dropout(p=0.5)
+        #self.dropout = nn.Dropout(p=0.5)
 
 
     def forward(self, state):
         """Build a network that maps state -> action values."""
         x = F.relu(self.fc1(state))
-        x = self.dropout(x)
+        #x = self.dropout(x)
         x = F.relu(self.fc2(x))
-        x = self.dropout(x)
+        #x = self.dropout(x)
         x = F.relu(self.fc3(x))
-        x = self.dropout(x)
+        #x = self.dropout(x)
         x = F.relu(self.fc4(x))
-        x = self.dropout(x)
+        #x = self.dropout(x)
         
         return self.fc5(x)

@@ -95,8 +95,9 @@ class Agent():
         Q_targets_next = self.qnetwork_target(next_states).detach().max(1)[0].unsqueeze(1)
         
         # compute targest for current states
-        Q_targets = dones*rewards + (1 - dones)*(rewards + gamma*Q_targets_next)
-
+        #Q_targets = dones*rewards + (1 - dones)*(rewards + gamma*Q_targets_next)
+        Q_targets = rewards + (gamma * Q_targets_next * (1 - dones))
+        
         # get expected Q values from local model
         Q_expected = self.qnetwork_local(states).gather(1, actions)
 
