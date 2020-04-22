@@ -87,6 +87,26 @@ class Agent():
 
         ## TODO: compute and minimize the loss
         "*** YOUR CODE HERE ***"
+        # NOTE: the only operations that are allowed here are Pytorch operations
+        # if we use other types of operations then the computational graph gets
+        # broken - moral of the story is use Pytorch ops to manipulate
+
+        # get max predicted Q vales (for next states) from target model
+        Q_targets_next = self.qnetwork_target(next_states).detach().max(1)[0].unsqueeze(1)
+        
+        # compute targest for current states
+        Q_targets = dones*rewards + (1 - dones)*(rewards + gamma*Q_targets_next)
+
+        # get expected Q values from local model
+        Q_expected = self.qnetwork_local(states).gather(1, actions)
+
+        # compute loss
+        loss = F.mse_loss(Q_expected, Q_targets)
+
+        # minimise the loss
+        self.optimizer.zero_grad() # gradients are set to zero
+        loss.backward()
+        self.optimizer.step()
 
         # ------------------- update target network ------------------- #
         self.soft_update(self.qnetwork_local, self.qnetwork_target, TAU)                     

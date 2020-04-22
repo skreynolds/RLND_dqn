@@ -29,8 +29,6 @@ class QNetwork(nn.Module):
         # specify dropout layers
         self.dropout = nn.Dropout(p=0.5)
 
-        # specify logsoftmax layer
-        self.logsoftmax = nn.LogSoftmax(dim=1)
 
     def forward(self, state):
         """Build a network that maps state -> action values."""
@@ -42,7 +40,5 @@ class QNetwork(nn.Module):
         x = self.dropout(x)
         x = F.relu(self.fc4(x))
         x = self.dropout(x)
-        x = F.relu(self.fc5(x))
-        x = self.dropout(x)
-
-        return self.logsoftmax(x)
+        
+        return self.fc5(x)
